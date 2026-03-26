@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+requests
+apscheduler
+python-dotenv
+numpy
