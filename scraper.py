@@ -24,13 +24,13 @@ def fetch_top_wallets(limit=100):
                 if isinstance(data, list) and len(data) > 0:
                     wallets = []
                     for entry in data:
-    addr = (
-        entry.get("proxyWallet")
-        or entry.get("proxyAddress")
-        or entry.get("address")
-        or entry.get("user")
-        or ""
-    )
+  					    addr = (
+ 					        entry.get("proxyWallet")
+    					    or entry.get("proxyAddress")
+  					        or entry.get("address")
+					        or entry.get("user")
+					        or ""
+					    )
                         if addr:
                             wallets.append(addr)
                     if wallets:
