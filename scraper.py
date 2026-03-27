@@ -7,7 +7,6 @@ DATA_API  = "https://data-api.polymarket.com"
 GAMMA_API = "https://gamma-api.polymarket.com"
 
 def fetch_top_wallets(limit=100):
-    # Probar múltiples endpoints hasta encontrar el que funciona
     endpoints = [
         f"{DATA_API}/leaderboard?limit={limit}",
         f"{DATA_API}/leaderboard?limit={limit}&window=monthly",
@@ -19,28 +18,34 @@ def fetch_top_wallets(limit=100):
         try:
             r = requests.get(url, timeout=15)
             print(f"[SCRAPER] {url} -> {r.status_code} | {r.text[:200]}")
+
             if r.status_code == 200:
                 data = r.json()
+
                 if isinstance(data, list) and len(data) > 0:
                     wallets = []
+
                     for entry in data:
-                          addr = (
-                             entry.get("proxyWallet")
+                        addr = (
+                            entry.get("proxyWallet")
                             or entry.get("proxyAddress")
-                              or entry.get("address")
+                            or entry.get("address")
                             or entry.get("user")
                             or ""
                         )
+
                         if addr:
                             wallets.append(addr)
+
                     if wallets:
                         print(f"[SCRAPER] Encontradas {len(wallets)} wallets")
                         return wallets
+
         except Exception as e:
             print(f"[SCRAPER] Error {url}: {e}")
 
     print("[SCRAPER] Todos los endpoints fallaron — usando wallets hardcoded")
-    # Wallets conocidas de Polymarket como fallback
+
     return [
         "0x4B1C56e3fC2Be265E2a4E28d64CC7CF5a2694f6",
         "0xe28B9d5e1c5D59e20aD09ABb9B3562F4FfAabEC",
